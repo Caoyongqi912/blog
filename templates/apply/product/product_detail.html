@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+
+{% block title %}
+    {{ product.product_name }}
+{% endblock %}
+
+
+
+
+{% block post %}
+    <div class="row">
+
+        <div class="col-xs-6 col-md-3">
+
+            <a href="{% url 'pro_api:product_api' product.id %}" class="thumbnail" id="test">
+                <img src="{% static 'images/api.jpg' %}" alt="" style="width: 100px; height:
+                80px  "
+                     class="img-rounded">
+            </a>
+        </div>
+
+
+        <div class="col-xs-6 col-md-3">
+
+            <a href="{% url 'pro_web:web_case' product.id %}" class="thumbnail" id="test">
+                <img src="{% static 'images/web.jpg' %}" alt="" style="width: 100px; height:
+                80px  "
+                     class="img-rounded">
+            </a>
+        </div>
+
+        <div class="col-xs-6 col-md-3">
+
+            <a href="{% url 'pro_app:appcase' product.id %}" class="thumbnail" id="test">
+                <img src="{% static 'images/app.jpg' %}" alt="" style="width: 100px; height:
+                80px  "
+                     class="img-rounded">
+            </a>
+        </div>
+        <div class="col-xs-6 col-md-3">
+
+            <a href="{% url 'pro_bug:bug' product.id %}" class="thumbnail" id="test">
+                <img src="{% static 'images/bug.jpg' %}" alt="" style="width: 100px; height:
+                80px  "
+                     class="img-rounded">
+            </a>
+        </div>
+
+
+    </div>
+{% endblock %}

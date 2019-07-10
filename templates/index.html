@@ -1,0 +1,78 @@
+{% extends 'base.html' %}
+{% block title %}
+    CYQ's Blog
+{% endblock %}
+{% block post %}
+
+    {% for art in page_obj %}
+        <article class="box post post-excerpt">
+            <header>
+                <h2><a href="{% url 'articles:detail' art.id %}">{{ art.title }}</a></h2>
+                <p>{{ art.desc }}</p>
+            </header>
+            <div class="info">
+
+                <span class="date"><span class="month">{{ art.add_time| time }}</span></span>
+
+                <ul class="stats">
+                    <li><a href="#" class="icon fa-comment">{{ art.comment_num }}</a></li>
+                    <li><a href="#" class="icon fa-heart">{{ art.click_num }}</a></li>
+                    <li>&nbsp;{{ art.author }}</li>
+                </ul>
+            </div>
+        </article>
+        <hr>  <br><br>
+    {% empty %}
+        <div class="no-post">暂时还没有发布的文章！</div>
+    {% endfor %}
+
+
+
+{% endblock %}
+
+
+{% block pag %}
+    <div class="pagination">
+
+        <nav aria-label="...">
+            <ul class="pager">
+                {% if page_obj.has_previous %}
+                    <li class="previous"><a href="?page={{ page_obj.previous_page_number }}&cid={{ cid }}"><span
+                            aria-hidden="true">&larr;</span> Older</a></li>
+                {% else %}
+                    <li class="previous disabled"><a href="#"><span aria-hidden="true">&larr;</span> Older</a></li>
+
+
+                {% endif %}
+
+
+                {% if page_obj.has_next %}
+                    <li class="next"><a href="?page={{ page_obj.next_page_number }}&cid={{ cid }}">Newer <span
+                            aria-hidden="true">&rarr;</span></a></li>
+                {% else %}
+                    <li class="previous disabled"><a href="#"><span aria-hidden="true">&rarr;</span> Newer</a></li>
+
+                {% endif %}
+
+            </ul>
+        </nav>
+
+    </div>
+
+{% endblock %}
+
+
+{% block classify %}
+    <header>
+        <h2>分类</h2>
+    </header>
+    {% for car in classify %}
+        <ul>
+            <li><a href="{% url 'Index:index' %}?cid={{ car.id }}" style="font-family: 'Arial Black'">{{ car }}</a>
+                <span
+                        style="font-family: 'Arial Black';float: right">({{ car.articles_set.count }})</span></li>
+        </ul>
+    {% endfor %}
+
+
+{% endblock %}

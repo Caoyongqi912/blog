@@ -1,0 +1,125 @@
+{% load static %}
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+    <title>{% block title %}
+
+    {% endblock %}</title>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no"/>
+    <link rel="stylesheet" href="{% static 'assets/css/main.css' %}"/>
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/detail.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/code.css' %}">
+
+    <link REL="SHORTCUT ICON" HREF="{% static "images/favicon.ico" %}"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css"
+          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    {% block mycss %}
+
+    {% endblock %}
+</head>
+
+<body class="is-preload">
+
+<!-- Content -->
+<div id="content">
+    <div class="inner">
+        <!-- Post -->
+        {% block post %}
+            {% block nav_tab %}
+            
+            {% endblock %}
+        {% endblock %}
+
+        {% block comment %}
+        {% endblock %}
+
+        <!-- Pagination -->
+        {% block pag %}
+        {% endblock %}
+
+    </div>
+</div>
+
+<!-- Sidebar -->
+<div id="sidebar">
+
+    <!-- Logo -->
+    <h1 id="logo"><a href="{% url 'Index:index' %}">CYQ's Blog</a></h1>
+
+
+    <!-- Nav -->
+    <nav id="nav">
+        <div class="dropdown">
+            <ul>
+                <li><a href="{% url 'Index:index' %}" id="nav_list">首页</a></li>
+                <li id="nav_list"><a href="{% url 'Index:apply' %}">应用</a></li>
+                {% if request.user.is_authenticated %}
+                    <li id="user"><a>{{ request.user.username }} &nbsp;&nbsp;&nbsp;
+                        <span class="glyphicon glyphicon-chevron-down"></span></a>
+                    </li>
+                    <li class="users"><a href="{% url 'User:modify' %}">修改信息</a></li>
+                    <li class="users"><a href="{% url 'User:quit' %}">退出</a></li>
+
+                {% else %}
+
+                    <li id="nav_list"><a href="{% url 'User:login' %}">登录</a></li>
+                    <li id="nav_list"><a href="{% url 'User:register' %}">注册</a></li>
+                {% endif %}
+
+                {% block sidebar %}
+
+                {% endblock %}
+
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Search -->
+    <section class="box search">
+        <form method="get" action="{% url 'Index:index' %}" role="search">
+            <input type="text" class="text" name="q" required placeholder="Search"/>
+        </form>
+    </section>
+
+
+    <!-- Recent Posts -->
+    <section class="box recent-posts">
+        {% block classify %}
+        {% endblock %}
+    </section>
+
+    <!-- Copyright -->
+    <ul id="copyright">
+        <li>&copy; Untitled.</li>
+        <li>Design: <a href="http://html5up.net">HTML5 UP</a></li>
+        <li><a href="{% url 'Index:about' %}">关于我</a></li>
+
+    </ul>
+
+</div>
+
+<!-- Scripts -->
+<script src="{% static 'assets/js/jquery.min.js' %}"></script>
+<script src="{% static 'assets/js/browser.min.js' %}"></script>
+<script src="{% static 'assets/js/bootstrap.min.js' %}"></script>
+<script src="{% static 'assets/js/breakpoints.min.js' %}"></script>
+<script src="{% static 'assets/js/util.js' %}"></script>
+<script src="{% static 'assets/js/main.js' %}"></script>
+<script type="text/javascript" color="black" opacity='1' zIndex="-2" count="150"
+        src="//cdn.bootcss.com/canvas-nest.js/1.0.1/canvas-nest.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/js/bootstrap.min.js"
+        integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+        crossorigin="anonymous"></script>
+
+<script>
+    $(document).ready(function () {
+        $('#user').click(function () {
+            $('.users').toggle();
+        })
+    })</script>
+{% block js %}
+{% endblock %}
+</body>
+</html>

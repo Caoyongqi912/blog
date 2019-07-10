@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block title %}
+    周排行
+{% endblock %}
+
+{% block post %}
+    <ul>
+        {% for foo in  quanji %}
+
+            <div class="media">
+                <div class="media-left media-middle">
+                    <a href="#">
+                        <img class="media-object" src="{{ foo.m_img }}" alt="丢了。。"
+                             style="width:150px;height: 200px;">
+                    </a>
+                </div>
+                <div class="media-body">
+                    <h4 class="media-heading">{{ foo.m_name }}</h4>
+                    <div>{{ foo.m_content }}</div>
+                    <br>
+                    <div>点击链接下载： <a href="{{ foo.m_url }}" style="color: red">{{ foo.m_url }}</a></div>
+                    <br>
+                </div>
+            </div>
+            <br>
+         {% empty %}
+            <p>啥也沒有 返回<a href="{% url 'Index:index' %}">首頁</a></p>
+        {% endfor %}
+
+    </ul>
+{% endblock %}

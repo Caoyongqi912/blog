@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+
+{% block post %}
+     <table class="table table-bordered">
+        <tr class="warning">
+            <th>产品</th>
+            <th>所属用例</th>
+            <th>步骤</th>
+            <th>对象描述</th>
+            <th>定位方式</th>
+            <th>控件元素</th>
+            <th>操作方法</th>
+            <th>测试数据</th>
+            <th>验证数据</th>
+            <th>测试结果</th>
+            <th>创建时间</th>
+
+
+        </tr>
+
+        {% for web in web_step %}
+            <tr class="info">
+                <td>{{ web.web_case }}</td>
+                <td>{{ web.web_case_name }}</td>
+                <td>{{ web.web_test_step }}</td>
+                <td>{{ web.web_sbj_name }}</td>
+                <td>{{ web.web_find_method }}</td>
+                <td>{{ web.web_element }}</td>
+                <td>{{ web.web_opt_method }}</td>
+                <td>{{ web.web_test_data }}</td>
+                <td>{{ web.web_assert_data }}</td>
+                <td>{{ web.web_test_res }}</td>
+                <td>{{ web.create_time }}</td>
+            </tr>
+
+        {% endfor %}
+    </table>
+{% endblock %}

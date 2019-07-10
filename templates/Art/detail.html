@@ -1,0 +1,204 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block title %}
+    {{ article.title }}
+{% endblock %}
+{% block mycss %}
+    <style>
+        #comment-list img {
+            border-radius: 50%
+        }
+
+        #panel {
+            padding: 50px;
+            display: none;
+        }
+
+
+    </style>
+
+{% endblock %}
+{% block classify %}
+    <header>
+        <h2>分类</h2>
+    </header>
+    {% for car in Classify %}
+        <ul>
+            <li><a href="{% url 'Index:index' %}?cid={{ car.id }}" style="font-family: 'Arial Black'">{{ car }}</a>
+                <span
+                        style="font-family: 'Arial Black';float: right">({{ car.articles_set.count }})</span></li>
+        </ul>
+
+    {% endfor %}
+
+
+{% endblock %}
+
+{% block post %}
+    <div>
+        <header class="entry-header">
+            <h2 class="entry-title">{{ article.title }}</h2>
+            <div class="entry-meta">
+                <span class="post-category"><a href="#">{{ article.category.name }}</a></span>
+                <span class="post-date"><a href="#"><time class="entry-date"
+                                                          datetime="{{ article.add_time }}">{{ article.add_time }}</time></a></span>
+                <span class="post-author"><a href="#">作者：{{ article.author.username }}</a></span>
+                <span class="views-count"><a href="#">点击数：{{ article.click_num }}</a></span>
+            </div>
+        </header>
+        <div class="entry-content clearfix">
+            {{ article.content |safe }}
+        </div>
+    </div>
+{% endblock %}
+
+{% block comment %}
+    <section class="comment-area">
+        <br><br><br><br>
+        <h1 style="color: black">评论 共{{ article.comment_num }}条评论</h1>
+        <hr>
+        <br>
+
+        <ul class="comment-list ">
+            {% for comment in comments %}
+
+                <li class="comment-item" style="list-style: none">
+                    {% if comment.comment_person.avatar %}
+                        {% if comment.comment_person.oauth %}
+                            <img src="{{ comment.comment_person.avatar }}" alt="
+                        ..."
+                                 class="img-circle"
+                                 height="50"
+                                 width="50">
+                        {% else %}
+                            <img src="{{ comment.comment_person.avatar.url }}" alt="
+                        ..."
+                                 class="img-circle"
+                                 height="50"
+                                 width="50">
+
+                        {% endif %}
+
+
+
+                    {% else %}
+                        <img src="{% static 'images/default.png' %}" alt="..." class="img-circle" height="50"
+                             width="50">
+                    {% endif %}
+                    <span class="nickname">&nbsp;&nbsp;&nbsp;&nbsp;<span
+                            class="textF-primary"
+                            style="font-family: 'Arial Black'">{% if comment.comment_person.username %}
+                        {{ comment.comment_person.username }}
+                    {% else %}
+                        火星人
+                    {% endif %}</span></span>
+                    <time class="submit-date"><span class="text-primary"
+                                                    style="margin-left: 7%   ">{{ comment.comment_time }}</span>
+                    </time>
+                    <div class="text" style="border-radius:10px;">
+                        <span class="text-danger" style="font-size: medium;margin-left: 10px">
+                            {% if comment.comment_content %}
+                                {{ comment.comment_content|safe }}
+                            {% endif %}
+                            {% if comment.comment_img %}
+                                <img src="{{ comment.comment_img.url }}" alt="图片丢了.." class="img-responsive"
+                                     height="100"
+                                     width="100">
+
+                            {% endif %}
+                        </span>
+
+                    </div>
+                    <br>
+                    <div class="text-nowrap" style="margin-left: 10% ">
+                        <span class="glyphicon glyphicon-share-alt"></span>
+                        &nbsp;
+                        <a id="flip">回复</a>
+                        <div id="panel">
+                            <form action="{% url 'articles:add_comment'  article.id %}" method="post">
+                                {% csrf_token %}
+                                <p><textarea name="comment" id="comment" cols="25" rows="5" tabindex="4"
+                                             class="form-control"></textarea></p>
+                                <p>
+                                    <input name="submit" type="submit" id="submit" tabindex="5" value="提交评论"
+                                           class="button"/>
+
+                                </p>
+                            </form>
+                        </div>
+                    </div>
+                </li>
+
+            {% empty %}
+                <h3 style="color: black">暂无评论</h3>
+            {% endfor %}
+        </ul>
+
+    </section>
+    <section class="comment-area">
+        <div id="commentform">
+            {% if request.user.is_authenticated %}
+                <h3 id="respond" style="color: white">发表评论:</h3>
+
+                <form action="{% url 'articles:add_comment' article.id %}" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <p><textarea name="comment_content" id="text_body" cols="25" rows="5" tabindex="4"
+                             class="form-control"></textarea></p>
+                <p>
+                    <input type="file" name="comment_img" id="submit-pic" tabindex="2" value="上传图片" class="button"
+                           multiple/>
+
+
+                </p>
+                <p>
+                    <input name="submit" type="submit" id="submit-text" tabindex="5" value="提交评论" class="button"/>
+                </p>
+
+            {% else %}
+                <h3 id="respond" style="color: black">请<a href="{% url 'User:login' %}?next=
+{% url 'articles:detail' article.id %}">登录
+                </a>发表评论</h3>
+            {% endif %}
+
+            </form>
+
+        </div>
+
+
+    </section>
+
+
+{% endblock %}
+
+
+{% block js %}
+    <script>
+        $('#submit-text').click(function () {
+            var content = $('#text_body').val();
+            var file = $('#submit-pic').val();
+
+
+            console.log(content);
+            if (content.length == 0 && file.length == 0) {
+                alert('内容不能为空！');
+                return false
+
+            } else if (file.length != 0) {
+                var extStart = flie.lastIndexOf('.');
+                ext = path.substring(extStart, file.length).toUpperCase();
+                if (ext !== '.PNG' && ext !== '.JPG' && ext !== '.JPEG' && ext !== '.GIF') {
+                    alert("格式错误！");
+                    return false;
+                }
+            }
+        });
+        $('#flip').click(function () {
+            var name = $('.textF-primary').text();
+            console.log(name);
+            var comment_content = $('textarea').val();
+            console.log(comment_content);
+            $('textarea').val('@' + name + ':' + comment_content)
+
+        })
+    </script>
+{% endblock %}

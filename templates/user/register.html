@@ -1,0 +1,165 @@
+{% extends 'base.html' %}
+{% block title %}
+    register
+{% endblock %}
+
+{% block post %}
+    <form action="{% url 'User:register' %}" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="form-group has-success has-feedback" id="name_1">
+            <label class="control-label">用户名</label>
+            <input type="text" class="form-control" id="inputSuccess1" name="username" placeholder="输入名字"
+                   aria-describedby="inputSuccess2Status"><span id="errorname" style="color: red;"></span>
+            <span id="inputSuccess2Status" class="sr-only"></span>
+            <span class="" aria-hidden="true" id="input_name"></span>
+
+
+        </div>
+        <div class="form-group has-success has-feedback" id="pwd_2">
+            <label class="control-label">密码</label>
+            <input type="password" class="form-control" id="inputSuccess2" placeholder="输入密码" name="password"
+                   aria-describedby="inputSuccess2Status"><span id="num1pwd" style="color: red;"></span>
+            <span class="" aria-hidden="true" id="input_pwd1"></span>
+            <span id="inputError2Status" class="sr-only"></span>
+        </div>
+        <div class="form-group has-success has-feedback" id="pwd_3">
+            <label class="control-label">再次输入密码</label>
+            <input type="password" class="form-control" id="inputSuccess3" placeholder="再次输入密码" name="cpassword"
+                   aria-describedby="inputError2Status"><span id="errorpwd" style="color: red;"></span>
+            <span class="" aria-hidden="true" id="input_pwd2"></span>
+            <span id="inputError2Status" class="sr-only"></span>
+        </div>
+        <div class="form-group has-success has-feedback" id='ema'>
+            <label class="control-label">邮箱</label>
+            <div class="input-group">
+                <span class="input-group-addon">@</span>
+                <input type="text" class="form-control" id="inputGroupSuccess1"
+                       aria-describedby="inputGroupSuccess1Status" name="email">
+            </div>
+            <span id="erroremail" style="color: red;"></span>
+            <span class="" aria-hidden="true" id="input_email"></span>
+            <span id="inputGroupSuccess1Status" class="sr-only"></span>
+        </div>
+        <div class="form-group has-success has-feedback">
+            <label class="control-label">头像</label>
+            <input type="file" id="exampleInputFile" name="avatar">
+        </div>
+        <br>
+        <div class="form-group has-success has-feedback">
+
+            <input type="submit" value="注册" class="form-control"
+                   aria-describedby="inputSuccess2Status" id="but">
+        </div>
+
+    </form>
+    {% if msg %}
+        <div class="alert alert-danger" role="alert">{{ msg }}</div>
+
+    {% endif %}
+
+{% endblock %}
+
+
+
+{% block js %}
+    <script>
+        $('#inputSuccess1').blur(function () {
+            var values = $('#inputSuccess1').val();
+            console.log(values);
+            if (values == '') {
+                $('#errorname').text('用户名不能为空！');
+                $('#input_name').addClass('glyphicon glyphicon-remove form-control-feedback');
+                $('#name_1').removeClass('has-success').addClass('has-error');
+
+            } else {
+
+                $.post('{% url "User:register_check" %}', {
+                    username: values,
+                    csrfmiddlewaretoken: "{{ csrf_token }}"
+                }, function (data) {
+                    if (data.name = 'ok') {
+                        $('#input_name').removeClass('glyphicon glyphicon-remove form-control-feedback').addClass('glyphicon glyphicon-ok form-control-feedback');
+                        $('#name_1').addClass('has-success').removeClass('has-error');
+                        $('#errorname').text('')
+                    } else if (data.name == 'fail') {
+                        $('#input_name').addClass('glyphicon glyphicon-remove form-control-feedback');
+                        $('#name_1').removeClass('has-success').addClass('has-error');
+                        $('#errorname').text('用户名存在！')
+                    }
+                })
+            }
+        });
+        $('#inputSuccess2').blur(function () {
+            var values = $(this).val();
+            var count = $(this).val().length;
+            if (values == '') {
+                $('#input_pwd1').addClass('glyphicon glyphicon-remove form-control-feedback');
+                $('#pwd_2').removeClass('has-success').addClass('has-error');
+                $('#num1pwd').text('密码不能为空!')
+            } else if (count < 6) {
+                $('#num1pwd').text('密码位数不能小于6位 ');
+                $('#input_pwd1').addClass('glyphicon glyphicon-remove form-control-feedback');
+                $('#pwd_2').removeClass('has-success').addClass('has-error');
+            } else {
+
+                $('#input_pwd1').removeClass('glyphicon glyphicon-remove form-control-feedback').addClass('glyphicon glyphicon-ok form-control-feedback');
+                $('#num1pwd').text('');
+                $('#pwd_2').removeClass('has-error').addClass('has-success')
+            }
+        });
+        $('#inputSuccess3').blur(function () {
+            var pwd1 = $('#inputSuccess2').val();
+            var pwd2 = $('#inputSuccess3').val();
+            if (pwd2 == '') {
+                $('#errorpwd').text('不能为空！');
+                $('#input_pwd2').removeClass('glyphicon glyphicon-ok form-control-feedback').addClass('glyphicon glyphicon-remove form-control-feedback');
+                $('#pwd_3').removeClass('has-success').addClass('has-error');
+            }
+            if (pwd2 == pwd1) {
+                $('#input_pwd2').removeClass('glyphicon glyphicon-remove form-control-feedback').addClass('glyphicon glyphicon-ok form-control-feedback');
+                $('#pwd_3').removeClass('has-error').addClass('has-success');
+                $('#errorpwd').text('')
+            }
+            if (pwd2 != pwd1) {
+                $('#input_pwd2').removeClass('glyphicon glyphicon-ok form-control-feedback').addClass('glyphicon glyphicon-remove form-control-feedback');
+                $('#pwd_3').removeClass('has-success').addClass('has-error');
+                $('#errorpwd').text('两次输入的密码不相同！')
+
+            }
+        });
+        $('#inputGroupSuccess1').blur(function () {
+            var value = $(this).val();
+            var reg = /^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+((\.[a-zA-Z0-9_-]{2,3}){1,2})$/;
+            if (value == '') {
+                $('#erroremail').text('邮箱不可为空！');
+                $('#input_email').removeClass('glyphicon glyphicon-ok form-control-feedback').addClass('glyphicon glyphicon-remove form-control-feedback');
+                $('#ema').removeClass('has-success').addClass('has-error');
+            } else if (!reg.test(value)) {
+                $('#erroremail').text('格式错误！');
+                $('#input_email').removeClass('glyphicon glyphicon-ok form-control-feedback').addClass('glyphicon glyphicon-remove form-control-feedback');
+                $('#ema').removeClass('has-success').addClass('has-error');
+            } else {
+                $.post('{% url "User:register_check" %}', {
+                    'email': value,
+                    csrfmiddlewaretoken: '{{ csrf_token }}'
+                }, function (data) {
+                    if (data.email == 'fail') {
+                        $('#erroremail').text('邮箱已存在！');
+                        $('#input_email').removeClass('glyphicon glyphicon-ok form-control-feedback').addClass('glyphicon glyphicon-remove form-control-feedback');
+                        $('#ema').removeClass('has-success').addClass('has-error');
+                    } else {
+                        $('#erroremail').text('');
+                        $('#email').removeClass('glyphicon glyphicon-remove form-control-feedback').addClass('glyphicon glyphicon-ok form-control-feedback');
+                        $('#ema').removeClass('has-error').addClass('has-success')
+                    }
+
+                });
+
+            }
+
+
+        });
+
+
+    </script>
+{% endblock %}

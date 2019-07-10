@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block title %}
+    应用
+{% endblock %}
+
+{% block post %}
+    <div class="row">
+        <div class="col-xs-6 col-md-3">
+            <a href="{% url 'spider:to_youdao_spider' %}" class="thumbnail">
+                <img src="{% static 'images/youdao.png' %}" alt="有道翻译" style="width: 150px; height: 60px;"
+                     class="img-rounded">
+
+            </a>
+
+        </div>
+        <div class="col-xs-6 col-md-3">
+
+            <a href="{% url 'spider:quanji_spider' %}" class="thumbnail">
+                <img src="{% static 'images/qj.png' %}" alt="" style="width: 100px; height: 60px  " class="img-rounded">
+            </a>
+        </div>
+        <div class="col-xs-6 col-md-3">
+
+            <a href="{% url 'spider:cat' %}" class="thumbnail">
+                <img src="{% static 'images/cat.png' %}" alt="" style="width: 100px; height: 60px  "
+                     class="img-rounded">
+            </a>
+        </div>
+        <div class="col-xs-6 col-md-3">
+
+            <a href="{% url 'product:product' %}?next={% url 'product:product' %}" class="thumbnail" id="test">
+                <img src="{% static 'images/test.png'   %}" alt="" style="width: 100px; height:
+                60px  "
+                     class="img-rounded">
+            </a>
+        </div>
+    </div>
+
+
+{% endblock %}
+
+{% block js %}
+{% endblock %}

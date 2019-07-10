@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+
+<h2>{{  appcase }}</h2>
+{% block post %}
+     <table class="table table-bordered">
+        <tr class="warning">
+            <th>ID</th>
+            <th>产品</th>
+            <th>测试用例名称</th>
+            <th>测试结果</th>
+            <th>测试负责</th>
+            <th>时间</th>
+            <th>测试用例步骤</th>
+
+
+
+        </tr>
+
+        {% for app in appcase %}
+            <tr class="info">
+                <td>{{ app.id }}</td>
+                <td>{{ app.product.product_name }}</td>
+                <td>{{ app.app_case_name }}</td>
+                <td>{{ app.app_case_result }}</td>
+                <td>{{ app.app_tester }}</td>
+                <td>{{ app.create_time }}</td>
+                <td><a href="{% url 'pro_app:appcasedetail' app.id %}">详细</a></td>
+            </tr>
+
+        {% endfor %}
+    </table>
+{% endblock %}

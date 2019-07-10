@@ -1,1 +1,1 @@
-# product
+# Django_blog

@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+
+
+<h2>{{ appcase.product.set }}</h2>
+{% block post %}
+     <table class="table table-bordered">
+        <tr class="warning">
+            <th>所属产品</th>
+            <th>所属案例</th>
+            <th>步骤</th>
+            <th>定位方式</th>
+            <th>控件元素</th>
+            <th>操作方法</th>
+            <th>测试数据</th>
+            <th>验证数据</th>
+            <th>测试结果</th>
+            <th>时间</th>
+
+
+
+
+        </tr>
+
+        {% for app in appcasestep %}
+            <tr class="info">
+                <td>{{ app.appcase.product.product_name }}</td>
+                <td>case{{ app.appcase.id }}：{{ app.appcase.app_case_name }}</td>
+                <td>{{ app.app_test_step }}：{{ app.app_sbj_name }}</td>
+
+                <td>{{ app.app_find_method }}</td>
+                <td>{{ app.app_element }}</td>
+                <td>{{ app.app_opt_method }}</td>
+                <td>{{ app.app_test_data }}</td>
+                <td>{{ app.app_assert_data }}</td>
+                <td>{% if app.app_res == 1 %}
+                    <a href="" style="color: green">{{ app.app_res }}</a>
+                    {% else %}
+                    <a href="" style="color: red">{{ app.app_res }}</a>
+                {% endif %}</td>
+                <td>{{ app.create_time }}</td>
+            </tr>
+
+        {% endfor %}
+    </table>
+{% endblock %}

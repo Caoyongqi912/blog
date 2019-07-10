@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block title %}
+    貓眼實時票房
+{% endblock %}
+
+{% block post %}
+
+
+    <table class="table table-bordered">
+        <tr class="warning">
+            <th>電影名</th>
+            <th>票房</th>
+            <th>上映天数</th>
+            <th>票房占比</th>
+            <th>排片場次</th>
+            <th>人均场次</th>
+            <th>上座率</th>
+
+        </tr>
+
+        {% for foo in cat %}
+            <tr class="info">
+                <td>{{ foo.movieName }}</td>
+                <td>{{ foo.sumBoxInfo }}</td>
+                <td>{{ foo.releaseInfo }}</td>
+                <td>{{ foo.boxInfo }}</td>
+                <td>{{ foo.boxRate }}</td>
+                <td>{{ foo.avgShowView }}</td>
+                <td>{{ foo.avgSeatView }}</td>
+            </tr>
+
+        {% endfor %}
+    </table>
+
+
+
+    <br><br>
+    {{ pie|safe }}
+
+
+
+{% endblock %}

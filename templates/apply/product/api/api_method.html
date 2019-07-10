@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+
+{% block post %}
+     <table class="table table-bordered">
+        <tr class="warning">
+            <th></th>
+            <th>用例名称</th>
+            <th>接口URL</th>
+            <th>步骤</th>
+            <th>请求产数与值</th>
+            <th>接口方法</th>
+            <th>预期结果</th>
+            <th>响应数据</th>
+            <th>测试结果</th>
+            <th>创建时间</th>
+
+
+        </tr>
+
+        {% for m in method %}
+            <tr class="info">
+                <td></td>
+                <td>{{ m.api_name }}</td>
+                <td>{{ m.api_url }}</td>
+                <td>{{ m.api_step }}</td>
+                <td>{{ m.api_param_val }}</td>
+                <td>{{ m.api_method }}</td>
+                <td>{{ m.api_result }}</td>
+                <td>{{ m.api_response }}</td>
+                <td>{{ m.api_status }}</td>
+                <td>{{ m.create_time }}</td>
+            </tr>
+
+        {% endfor %}
+    </table>
+{% endblock %}

@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% block post %}
+     <table class="table table-bordered">
+        <tr class="warning">
+            <th></th>
+            <th>流程接口名</th>
+            <th>描述</th>
+            <th>执行人</th>
+            <th>测试结果</th>
+            <th>创建时间</th>
+            <th></th>
+
+
+        </tr>
+
+        {% for a in api %}
+            <tr class="info">
+                <td></td>
+                <td>{{ a.api_test_name }}</td>
+                <td>{{ a.api_test_desc }}</td>
+                <td>{{ a.api_test_res }}</td>
+                <td>{{ a.create_time }}</td>
+                <td>{{ a.product }}</td>
+                <td><a href="{% url 'pro_api:api_method' a.id %}">步骤</a></td>
+            </tr>
+
+        {% endfor %}
+    </table>
+{% endblock %}

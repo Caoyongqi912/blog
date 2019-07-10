@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+{% block title %}
+    Set
+{% endblock %}
+
+
+
+{% block post %}
+    {% block nav_tab %}
+        <ul class="nav nav-tabs">
+           <li role="presentation"><a href="{% url 'product:product' %}">产品</a></li>
+            <li role="presentation"><a href="">用例管理</a></li>
+            <li role="presentation"><a href="">定時任務</a></li>
+            <li role="presentation"><a href="">BUG管理</a></li>
+            <li role="presentation" ><a href="{% url 'pro_rep:report' %}">测试报告</a></li>
+
+            <li role="presentation" class="active"><a href="{% url 'pro_set:set' %}">产品设置</a></li>
+
+        </ul>
+    {% endblock %}
+
+    <br><br><br>
+    <table class="table table-bordered">
+        <tr class="warning">
+            <th>ID</th>
+            <th>系统名称</th>
+            <th>设置值</th>
+            <th></th>
+        </tr>
+        {% for s in set %}
+            <tr class="info">
+                <td>{{ s.id }}</td>
+                <td>{{ s.set_name }}</td>
+                <td>{{ s.set_value }}</td>
+                <td></td>
+            </tr>
+        {% endfor %}
+    </table>
+    <br><br><br>
+
+    <div class="panel panel-default">
+        <!-- Default panel contents -->
+        <div class="panel-heading">用戶</div>
+
+        <!-- Table -->
+        <table class="table">
+            <tr class="warning">
+                <th>ID</th>
+                <th>用户名</th>
+                <th>邮件</th>
+                <th>注册日期</th>
+                <th></th>
+
+            </tr>
+
+            {% for u in user %}
+                <tr class="info">
+                    <td>{{ u.id }}</td>
+                    <td>{{ u.username }}</td>
+                    <td>{{ u.email }}</td>
+                    <td>{{ u.add_time }}</td>
+                    <td></td>
+                </tr>
+
+            {% endfor %}
+        </table>
+    </div>
+
+
+
+
+{% endblock %}

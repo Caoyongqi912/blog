@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block title %}
+    有道翻译
+{% endblock %}
+
+
+{% block post %}
+
+    <form action="#" enctype="multipart/form-data">
+        <div class="form-group has-success has-feedback" id="name_1">
+            <label class="control-label">有道翻译</label>
+            {% csrf_token %}
+            <input type="text" class="msg-input" placeholder="输入要翻译的内容">
+            <br><br>
+            <input type="text" class="msg-output" placeholder="翻译结果" disabled style="height: 50px">
+            <input type='button' id='button' value="翻译">
+        </div>
+    </form>
+{% endblock %}
+
+{% block myjs %}
+    <script>
+        $(function () {
+            var btn = $('#button');
+            btn.click(function () {
+                var msg_input = $('.msg-input').val();
+
+
+                $.post("{% url 'spider:youdao_spider' %}",
+                    {'msg_input': msg_input, csrfmiddlewaretoken: '{{ csrf_token }}'},
+                    function (data) {
+                        console.log(data);
+                        var status = data['status'];
+                        if (status == 'err') {
+                            $('.msg-output').val('err!')
+                        }
+
+
+                        var msg_output_for_e = data['output_for_e'];
+                        var msg_output_for_c = data['output_for_C'];
+
+                        if (/^[a-zA-Z\\n]*/.test(msg_input)) {
+                            $('.msg-output').val(msg_output_for_e )
+
+                        } else if (/^[\u4e00-\u9fa5\\n]*$/.test(msg_input)) {
+                            $('.msg-output').val(msg_output_for_c)
+
+                        } else {
+                            $('.msg-output').val('请正确输入!')
+
+                        }
+
+                    })
+            })
+        })
+    </script>
+{% endblock %}

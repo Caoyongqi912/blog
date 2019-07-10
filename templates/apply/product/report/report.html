@@ -1,0 +1,82 @@
+{% extends 'base.html' %}
+{% block title %}
+    测试报告
+{% endblock %}
+
+
+{% block post %}
+    {% block nav_tab %}
+        <ul class="nav nav-tabs">
+            <li role="presentation"><a href="{% url 'product:product' %}">产品</a></li>
+            <li role="presentation"><a href="">用例管理</a></li>
+            <li role="presentation"><a href="">定時任務</a></li>
+            <li role="presentation"><a href="">BUG管理</a></li>
+            <li role="presentation" class="active"><a href="{% url 'pro_rep:report' %}">测试报告</a></li>
+
+            <li role="presentation"><a href="{% url 'pro_set:set' %}">产品设置</a></li>
+
+        </ul>
+    {% endblock %}
+
+    <br><br><br>
+    <h3>单一接口扫描-自动化测试汇总报告</h3>
+    <table class="table table-bordered">
+        <tr class="warning">
+            <th>用例总数</th>
+            <th>通过</th>
+            <th>不通过</th>
+
+        </tr>
+        <tr class="info">
+            <td>{{ apis_count }}</td>
+            <td><a href="" style="color: green">{{ apis_pass_count }}</a></td>
+            <td><a href="" style="color: red">{{ apis_fail_count }}</a></td>
+        </tr>
+
+
+    </table>
+    <br> <br>
+
+
+    <h3>失敗接口列表</h3>
+    <table class="table table-bordered">
+        <tr class="warning">
+            <th>ID</th>
+            <th>产品</th>
+            <th>测试用例名称</th>
+            <th>URL地址</th>
+            <th>参数=值</th>
+            <th>方法</th>
+            <th>预期</th>
+            <th>测试结果</th>
+            <th>执行时间</th>
+
+        </tr>
+        {% for a in apis_list %}
+
+            <tr class="info">
+                <td>{{ a.id }}</td>
+                <td>{{ a.product.product_name }}</td>
+                <td>{{ a.api_name }}</td>
+                <td>{{ a.api_url }}</td>
+                <td>{{ a.api_par_val }}</td>
+                <td>{{ a.api_method }}</td>
+                <td>{{ a.api_result }}</td>
+                <td>{% if a.api_status == 1 %}
+                    <a href="" style="color:   green;">{{ a.api_status }}</a>
+                {% else %}
+                    <a href="" style="color: red">{{ a.api_status }}</a>
+
+                {% endif %}</td>
+                <td>{{ a.create_time }}</td>
+
+            </tr>
+        {% endfor %}
+
+
+    </table>
+
+
+
+
+{% endblock %}

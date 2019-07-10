@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+
+{% block post %}
+     <table class="table table-bordered">
+        <tr class="warning">
+            <th>ID</th>
+            <th>产品</th>
+            <th>单一接口测试用例名称</th>
+            <th>URL地址</th>
+            <th>参数=值</th>
+            <th>方法</th>
+            <th>预期结果</th>
+            <th>测试结果</th>
+            <th>创建时间</th>
+
+
+        </tr>
+
+        {% for a in apis %}
+            <tr class="info">
+                <td>{{ a.id }}</td>
+                <td>{{ a.product.product_name }}</td>
+                <td>{{ a.api_name }}</td>
+                <td>{{ a.api_url }}</td>
+                <td>{{ a.api_par_val }}</td>
+                <td>{{ a.api_method }}</td>
+                <td>{{ a.api_result }}</td>
+                <td>{{ a.api_status }}</td>
+                <td>{{ a.create_time }}</td>
+            </tr>
+
+        {% endfor %}
+    </table>
+{% endblock %}
