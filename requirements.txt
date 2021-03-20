@@ -40,7 +40,7 @@ image==1.5.27
 imagekit==1.0.6
 incremental==17.5.0
 jieba==0.39
-Jinja2==2.10.1
+Jinja2==2.11.3
 kiwisolver==1.0.1
 kombu==3.0.37
 lxml==4.3.3
